@@ -28,6 +28,9 @@ namespace Student_Management_V2
                         Show();
                     }
                     break;
+                case "5":
+                    Environment.Exit(0);
+                    break;
             }
         }
 
