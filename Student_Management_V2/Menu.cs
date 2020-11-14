@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Student_Management_V2
 {
@@ -11,7 +10,7 @@ namespace Student_Management_V2
         // indis numarlarına göre yönlendirme yapacağım menüler
         readonly static string[] mainMenuItems = {
             "Öğenci Ekle", "Arama Yap", "Öğrenci Bilgisi Düzenle", "Öğrenci Sil", "Öğrencileri Göster", "Çıkış Yap" };
-        readonly static string studentFile = "student.txt";
+        readonly static string studentFileName = "sudents.txt";
         // Menülere yönlendirme yapacağım fonksiyon
         public static void Show(string menuIndex="-1")
         {
@@ -47,15 +46,12 @@ namespace Student_Management_V2
                             break;
                         }
                         Console.Clear();
+                        // kullanıcının önceden girdiği değerleri ekara yazdırıyor.
                         StudentHelper.WriteCacheStd(std);
                         (std, error) = StudentHelper.StudentCreate(std);
                     }
                     // file save student
-                    
-                    break;
-                case "4":
-                    Console.WriteLine("gih");
-                    Console.ReadLine();
+                    FileHelper.AppendFile(std, studentFileName);
                     break;
                 case "5":
                     Environment.Exit(0);
