@@ -23,5 +23,13 @@ namespace Student_Management_V2
             Console.ResetColor();
             return Console.ReadLine();
         }
+
+        public static string EditedSudentSaveFile()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("Düzenleme Başarılı.\nTekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.ResetColor();
+            return Console.ReadLine();
+        }
     }
 }

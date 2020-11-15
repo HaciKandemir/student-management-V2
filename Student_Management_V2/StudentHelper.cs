@@ -59,6 +59,12 @@ namespace Student_Management_V2
             Console.WriteLine();
         }
 
+        public static void ShowStudentToUser(mStudent std)
+        {
+            Console.Clear();
+            Console.WriteLine(std);
+            Console.WriteLine();
+        }
 
     }
 }

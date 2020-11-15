@@ -61,5 +61,12 @@ namespace Student_Management_V2
             }
             return stdList.Where(x => x.GetType().GetProperty(prop).GetValue(x,null).ToString().ToLower()==value.ToLower()).ToList();//.GetValue(x, null).Equals(value, StringComparison.OrdinalIgnoreCase)).ToList();
         }
+
+        public static void WriteFile(List<mStudent> data, string fileName)
+        {
+            string path = dbPath(fileName);
+            var serialize = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(path, serialize);
+        }
     }
 }

@@ -98,15 +98,33 @@ namespace Student_Management_V2
 
                     if (!Validate.IsBetween0_X(stdInput, allStds.Count))
                     {
-                        // Tekrar denemek istiyor (Enter)
-                        if (Validate.TryAgain(Error.WrongInputTryAgain()))
-                        {
-                            Show("2");
-                            break;
-                        }
-                        Show();
+                        // Girdiği değer aralık dışı tekrar denemek istiyor mu
+                        bool editTry = Validate.TryAgain(Error.WrongInputTryAgain());
+                        Show(editTry ? "2" : "-1");
                         break;
                     }
+                    int stdIndex = Int32.Parse(stdInput);
+                    StudentHelper.ShowStudentToUser(allStds[stdIndex]);
+                    (mStudent student, bool errorEdit) = StudentHelper.StudentCreate();
+                    while (errorEdit)
+                    {
+                        // tekrar denemek istiyor musun
+                        string errorValue = Error.WrongInputTryAgain();
+                        if (!Validate.TryAgain(errorValue))
+                        {
+                            Show();
+                            break;
+                        }
+                        StudentHelper.ShowStudentToUser(allStds[stdIndex]);
+                        // kullanıcının önceden girdiği değerleri ekara yazdırıyor.
+                        StudentHelper.WriteCacheStd(student);
+                        (student, errorEdit) = StudentHelper.StudentCreate(student);
+                    }
+                    // yeni oluşturulan öğrenci düzenlenmek istenen öğrencinin yerine atanıyor.
+                    allStds[stdIndex] = student;
+                    FileHelper.WriteFile(allStds, studentFileName);
+                    string fulValue = Successful.EditedSudentSaveFile();
+                    Show(Validate.TryAgain(fulValue) ? "2" : "-1");
                     break;
                 case "5":
                     Environment.Exit(0);
@@ -131,8 +149,5 @@ namespace Student_Management_V2
             Console.Write("Aramak istediğiniz değeri girin: ");
             return Console.ReadLine();
         }
-
-        
-
     }
 }
