@@ -45,18 +45,18 @@ namespace Student_Management_V2
 
         public static void ShowStudentListToUser(List<mStudent> stds)
         {
-            Console.WriteLine();
             if (stds.Count > 0)
             {
-                foreach (var std in stds)
+                for (int i = 0; i < stds.Count; i++)
                 {
-                    Console.WriteLine(std);
+                    Console.WriteLine(i+". "+stds[i]);
                 }
             }
             else
             {
                 Console.WriteLine("Eşleşen değer bulunamadı.");
             }
+            Console.WriteLine();
         }
 
 

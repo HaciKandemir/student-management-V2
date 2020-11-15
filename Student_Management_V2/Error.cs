@@ -9,20 +9,19 @@ namespace Student_Management_V2
         public static void WrongNumber()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Yanlış değer. Tekrar denemek için ENTER'e bas.");
+            Console.Write("Yanlış değer. Tekrar denemek için ENTER'e bas. ");
             Console.ResetColor();
             Console.ReadLine();
             //Console.Clear();
         }
 
-        public static string WrongInputStudentProperty()
+        public static string WrongInputTryAgain()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Desteklenmeyen format girişi. \nTekrar denemek için ENTER'a, çıkmak için başka bir tuşa basın");
+            Console.Write("Yanlış veri girişi. \nTekrar denemek için ENTER'a, çıkmak için başka bir tuşa basın ");
             Console.ResetColor();
-            string value = Console.ReadLine();
+            return Console.ReadLine();
             //Console.Clear();
-            return value;
         }
     }
 }

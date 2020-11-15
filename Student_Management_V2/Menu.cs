@@ -40,7 +40,7 @@ namespace Student_Management_V2
                     while (error)
                     {
                         // tekrar denemek istiyor musun
-                        string errorValue = Error.WrongInputStudentProperty();
+                        string errorValue = Error.WrongInputTryAgain();
                         if (!Validate.TryAgain(errorValue))
                         { 
                             Show();
@@ -79,8 +79,10 @@ namespace Student_Management_V2
                         default:
                             Console.Clear();
                             string searchValue = GetSearchValue();
-                            var stds = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
-                            List<mStudent> filteredStds = FileHelper.ApplyFilter(stds, resSearchMenu, searchValue);
+                            // filtereleme yapmak için veriyi çekiyor.
+                            var toBeFilteredStds = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
+                            // veri filtreleniyor.
+                            List<mStudent> filteredStds = FileHelper.ApplyFilter(toBeFilteredStds, resSearchMenu, searchValue);
                             StudentHelper.ShowStudentListToUser(filteredStds);
                             break;
                     }
@@ -88,6 +90,24 @@ namespace Student_Management_V2
                     break;
                 #endregion
 
+                case "2":
+                    var allStds = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
+                    StudentHelper.ShowStudentListToUser(allStds);
+                    Console.Write("Düzenlemek istediğiniz öğrencinin numarası: ");
+                    string stdInput = Console.ReadLine();
+
+                    if (!Validate.IsBetween0_X(stdInput, allStds.Count))
+                    {
+                        // Tekrar denemek istiyor (Enter)
+                        if (Validate.TryAgain(Error.WrongInputTryAgain()))
+                        {
+                            Show("2");
+                            break;
+                        }
+                        Show();
+                        break;
+                    }
+                    break;
                 case "5":
                     Environment.Exit(0);
                     break;
@@ -108,7 +128,7 @@ namespace Student_Management_V2
 
         private static string GetSearchValue()
         {
-            Console.Write("Bulmak istediğiniz değeri girin: ");
+            Console.Write("Aramak istediğiniz değeri girin: ");
             return Console.ReadLine();
         }
 
