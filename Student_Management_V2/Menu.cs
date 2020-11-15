@@ -20,12 +20,12 @@ namespace Student_Management_V2
                 #region main menü
                 case "-1":
                     // itemler gösterilip kullanıcıdan girdi alınıyor.
-                    string _mainMenu = MainMenu();
+                    string _showMenu = ShowMenu(mainMenuItems);
                     // value bir sayı ise ve item uzunluğundan büyük değil ise true dönüyor.
-                    bool validate = Validate.IsBetween0_X(_mainMenu, mainMenuItems.Length);
+                    bool validate = Validate.IsBetween0_X(_showMenu, mainMenuItems.Length);
                     if (validate)
                     {
-                        Show(_mainMenu);
+                        Show(_showMenu);
                     }
                     else
                     {
@@ -40,7 +40,7 @@ namespace Student_Management_V2
                     {
                         // tekrar denemek istiyor musun
                         string errorValue = Error.WrongInputStudentProperty();
-                        if (!Validate.StudentCreateTryAgain(errorValue))
+                        if (!Validate.TryAgain(errorValue))
                         { 
                             Show();
                             break;
@@ -52,6 +52,10 @@ namespace Student_Management_V2
                     }
                     // file save student
                     FileHelper.AppendFile(std, studentFileName);
+                    // Kaydedildiği bilgisini ekrana yazdırıp tekrar denemek istediği soruluyor.
+                    string successfulValue = Successful.SudentSaveFile();
+                    // true ise Öğrenci ekleme menüsüne git değil ise ana menüye git
+                    Show(Validate.TryAgain(successfulValue) ? "0" : "-1");
                     break;
                 case "5":
                     Environment.Exit(0);
@@ -59,13 +63,12 @@ namespace Student_Management_V2
             }
         }
 
-        // Anasayfada gösterilecek bilgileri yazdırıyor.
-        private static string MainMenu()
+        // Kullanıcıya gösterilecek menü seçenekleri yazdırıyor.
+        private static string ShowMenu(string[] menuItems)
         {
-            //Array.ForEach(mainMenuItems, Console.WriteLine);
-            for (int i = 0; i < mainMenuItems.Length; i++)
+            for (int i = 0; i < menuItems.Length; i++)
             {
-                Console.WriteLine("{0}. {1:d}", i, mainMenuItems[i]);
+                Console.WriteLine("{0}. {1:d}", i, menuItems[i]);
             }
             return Console.ReadLine();
         }

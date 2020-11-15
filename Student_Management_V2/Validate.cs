@@ -46,8 +46,8 @@ namespace Student_Management_V2
             }
         }
 
-        // öğrenci oluşturulurken yanlış girilen veri tipinden sonra ana menüye mi dönecek tekrar mı deniyecek
-        public static bool StudentCreateTryAgain(string value)
+        // Tekrar demenemek istiyor mu
+        public static bool TryAgain(string value)
         {
             // press enter for try again
             if (value == "")
