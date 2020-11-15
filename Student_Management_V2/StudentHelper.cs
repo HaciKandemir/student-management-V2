@@ -43,6 +43,22 @@ namespace Student_Management_V2
             std.FilledProperty().ForEach(Console.WriteLine);
         }
 
+        public static void ShowStudentListToUser(List<mStudent> stds)
+        {
+            Console.WriteLine();
+            if (stds.Count > 0)
+            {
+                foreach (var std in stds)
+                {
+                    Console.WriteLine(std);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Eşleşen değer bulunamadı.");
+            }
+        }
+
 
     }
 }

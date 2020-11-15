@@ -10,7 +10,9 @@ namespace Student_Management_V2
         // indis numarlarına göre yönlendirme yapacağım menüler
         readonly static string[] mainMenuItems = {
             "Öğenci Ekle", "Arama Yap", "Öğrenci Bilgisi Düzenle", "Öğrenci Sil", "Öğrencileri Göster", "Çıkış Yap" };
-        readonly static string studentFileName = "sudents.txt";
+        readonly static string[] searchMenuItems = {
+            "TCye Göre Ara", "İsme Göre Ara", "Soyisme Göre Ara", "Ana Menüye Dön" };
+        readonly static string studentFileName = "students.txt";
         // Menülere yönlendirme yapacağım fonksiyon
         public static void Show(string menuIndex="-1")
         {
@@ -20,20 +22,19 @@ namespace Student_Management_V2
                 #region main menü
                 case "-1":
                     // itemler gösterilip kullanıcıdan girdi alınıyor.
-                    string _showMenu = ShowMenu(mainMenuItems);
-                    // value bir sayı ise ve item uzunluğundan büyük değil ise true dönüyor.
-                    bool validate = Validate.IsBetween0_X(_showMenu, mainMenuItems.Length);
-                    if (validate)
+                    string resMainMenu = ShowMenu(mainMenuItems);
+                    // resMainMenu bir sayı ise ve item uzunluğundan büyük değil ise true dönüyor.
+                    if (!Validate.IsBetween0_X(resMainMenu, mainMenuItems.Length))
                     {
-                        Show(_showMenu);
-                    }
-                    else
-                    {
-                        Error.WrongNumberMainMenu();
+                        Error.WrongNumber();
                         Show();
+                        break;
                     }
+                    Show(resMainMenu);
                     break;
                 #endregion
+
+                #region Öğrenci ekle
                 case "0":
                     (mStudent std, bool error) = StudentHelper.StudentCreate();
                     while (error)
@@ -57,6 +58,36 @@ namespace Student_Management_V2
                     // true ise Öğrenci ekleme menüsüne git değil ise ana menüye git
                     Show(Validate.TryAgain(successfulValue) ? "0" : "-1");
                     break;
+                #endregion
+
+                #region Arama
+                case "1":
+                    string resSearchMenu = ShowMenu(searchMenuItems);
+                    // kullanıcınıngirdiği değer aralıkta değil ise tekrar değer girmesi isteniyor.
+                    if (!Validate.IsBetween0_X(resSearchMenu, searchMenuItems.Length))
+                    {
+                        Error.WrongNumber();
+                        Show("1");
+                        break;
+                    }
+                    // Arama menüsünün içeriğindeki seçenek menüsü
+                    switch (resSearchMenu)
+                    {
+                        case "3":
+                            Show();
+                            break;
+                        default:
+                            Console.Clear();
+                            string searchValue = GetSearchValue();
+                            var stds = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
+                            List<mStudent> filteredStds = FileHelper.ApplyFilter(stds, resSearchMenu, searchValue);
+                            StudentHelper.ShowStudentListToUser(filteredStds);
+                            break;
+                    }
+                    Show(Validate.TryAgain(Successful.TryAgain()) ? "1" : "-1");
+                    break;
+                #endregion
+
                 case "5":
                     Environment.Exit(0);
                     break;
@@ -70,9 +101,18 @@ namespace Student_Management_V2
             {
                 Console.WriteLine("{0}. {1:d}", i, menuItems[i]);
             }
+            Console.WriteLine();
+            Console.Write("Menü numarasını girin: ");
             return Console.ReadLine();
         }
 
+        private static string GetSearchValue()
+        {
+            Console.Write("Bulmak istediğiniz değeri girin: ");
+            return Console.ReadLine();
+        }
+
+        
 
     }
 }

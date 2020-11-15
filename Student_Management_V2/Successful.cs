@@ -15,5 +15,14 @@ namespace Student_Management_V2
             //Console.Clear();
             return value;
         }
+
+        public static string TryAgain()
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            Console.Write("Tekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.ResetColor();
+            return Console.ReadLine();
+        }
     }
 }
