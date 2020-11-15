@@ -12,10 +12,14 @@ namespace Student_Management_V2
         public string LastName { get; set; }
         public DateTime? BirthDate { get; set; }
 
-        public string GetUserFriendlyString()
+        public override string ToString()
         {
-            return "TC No:" + TC + ", \t\tAd:" + FirstName + ", \t\tSoyad:" + LastName;
+            return string.Format("TC no: {0} Ad: {1} Soyad: {2} Doğum Tarihi: {3}", TC, FirstName, LastName, BirthDate);
         }
+        /*public string GetUserFriendlyString()
+        {
+            return string.Format("TC no: {0} Ad: {1} Soyad: {2} Doğum Tarihi: {3}", TC, FirstName, LastName, BirthDate);
+        }*/
 
         public List<string> FilledProperty()
         {

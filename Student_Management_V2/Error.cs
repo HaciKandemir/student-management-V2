@@ -6,7 +6,7 @@ namespace Student_Management_V2
 {
     class Error
     {
-        public static void WrongNumberMainMenu()
+        public static void WrongNumber()
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("Yanlış değer. Tekrar denemek için ENTER'e bas.");
