@@ -14,7 +14,7 @@ namespace Student_Management_V2
 
         public override string ToString()
         {
-            return string.Format("TC no: {0} Ad: {1} Soyad: {2} Doğum Tarihi: {3}", TC, FirstName, LastName, BirthDate);
+            return string.Format("TC no: {0} Ad: {1} Soyad: {2} Doğum Tarihi: {3}", TC, FirstName, LastName, BirthDate.Value.ToShortDateString());
         }
         /*public string GetUserFriendlyString()
         {

@@ -31,5 +31,15 @@ namespace Student_Management_V2
             Console.ResetColor();
             return Console.ReadLine();
         }
+
+        public static string DeletedStutend()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Öğrenci silindi");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Write("Tekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.ResetColor();
+            return Console.ReadLine();
+        }
     }
 }

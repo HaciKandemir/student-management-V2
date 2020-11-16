@@ -60,7 +60,7 @@ namespace Student_Management_V2
                     break;
                 #endregion
 
-                #region Arama
+                #region Öğenci ara
                 case "1":
                     string resSearchMenu = ShowMenu(searchMenuItems);
                     // kullanıcınıngirdiği değer aralıkta değil ise tekrar değer girmesi isteniyor.
@@ -90,11 +90,11 @@ namespace Student_Management_V2
                     break;
                 #endregion
 
+                #region Öğrenci düzenle
                 case "2":
                     var allStds = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
                     StudentHelper.ShowStudentListToUser(allStds);
-                    Console.Write("Düzenlemek istediğiniz öğrencinin numarası: ");
-                    string stdInput = Console.ReadLine();
+                    string stdInput = GetStudentIdValue();
 
                     if (!Validate.IsBetween0_X(stdInput, allStds.Count))
                     {
@@ -123,8 +123,34 @@ namespace Student_Management_V2
                     // yeni oluşturulan öğrenci düzenlenmek istenen öğrencinin yerine atanıyor.
                     allStds[stdIndex] = student;
                     FileHelper.WriteFile(allStds, studentFileName);
-                    string fulValue = Successful.EditedSudentSaveFile();
-                    Show(Validate.TryAgain(fulValue) ? "2" : "-1");
+                    string tryValueForEdit = Successful.EditedSudentSaveFile();
+                    Show(Validate.TryAgain(tryValueForEdit) ? "2" : "-1");
+                    break;
+                #endregion
+
+                case "3":
+                    var allStudents = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
+                    StudentHelper.ShowStudentListToUser(allStudents);
+                    string stdValueForRemove = GetStudentIdValue();
+                    if (!Validate.IsBetween0_X(stdValueForRemove, allStudents.Count))
+                    {
+                        // Girdiği değer aralık dışı tekrar denemek istiyor mu
+                        bool editTry = Validate.TryAgain(Error.WrongInputTryAgain());
+                        Show(editTry ? "3" : "-1");
+                        break;
+                    }
+                    // kullanıcının girdiği değerdeki veri siliniyor.
+                    allStudents.RemoveAt(int.Parse(stdValueForRemove));
+                    FileHelper.WriteFile(allStudents, studentFileName);
+                    string tryValueForRemove = Successful.DeletedStutend();
+                    Show(Validate.TryAgain(tryValueForRemove) ? "3" : "-1");
+                    break;
+                case "4":
+                    List<mStudent> showedStd = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
+                    StudentHelper.ShowStudentListToUser(showedStd);
+                    // öğrenciler gösterildikten sonra ana menüye dönüyor.
+                    Console.ReadLine();
+                    Show();
                     break;
                 case "5":
                     Environment.Exit(0);
@@ -147,6 +173,12 @@ namespace Student_Management_V2
         private static string GetSearchValue()
         {
             Console.Write("Aramak istediğiniz değeri girin: ");
+            return Console.ReadLine();
+        }
+
+        private static string GetStudentIdValue()
+        {
+            Console.Write("Seçmek istediğiniz öğrencinin numarası: ");
             return Console.ReadLine();
         }
     }
