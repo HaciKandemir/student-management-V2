@@ -39,9 +39,10 @@ namespace Student_Management_V2
                     (mStudent std, bool error) = StudentHelper.StudentCreate();
                     while (error)
                     {
-                        // tekrar denemek istiyor musun
-                        string errorValue = Error.WrongInputTryAgain();
-                        if (!Validate.TryAgain(errorValue))
+                        // Hata mesaji
+                        Error.WrongInputTryAgain();
+                        string addTry = TryAgainMenu();
+                        if (!Validate.TryAgain(addTry))
                         { 
                             Show();
                             break;
@@ -53,8 +54,10 @@ namespace Student_Management_V2
                     }
                     // file save student
                     FileHelper.AppendFile(std, studentFileName);
-                    // Kaydedildiği bilgisini ekrana yazdırıp tekrar denemek istediği soruluyor.
-                    string successfulValue = Successful.SudentSaveFile();
+                    // Kaydedildiği bilgisi ekrana yaılıyor.
+                    Successful.Added();
+                    // Tekrar denemek istediği soruluyor.
+                    string successfulValue = TryAgainMenu();
                     // true ise Öğrenci ekleme menüsüne git değil ise ana menüye git
                     Show(Validate.TryAgain(successfulValue) ? "0" : "-1");
                     break;
@@ -86,7 +89,7 @@ namespace Student_Management_V2
                             StudentHelper.ShowStudentListToUser(filteredStds);
                             break;
                     }
-                    Show(Validate.TryAgain(Successful.TryAgain()) ? "1" : "-1");
+                    Show(Validate.TryAgain(TryAgainMenu()) ? "1" : "-1");
                     break;
                 #endregion
 
@@ -95,11 +98,12 @@ namespace Student_Management_V2
                     var allStds = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
                     StudentHelper.ShowStudentListToUser(allStds);
                     string stdInput = GetStudentIdValue();
-
+                    // Değer aralık dışı mı?
                     if (!Validate.IsBetween0_X(stdInput, allStds.Count))
                     {
-                        // Girdiği değer aralık dışı tekrar denemek istiyor mu
-                        bool editTry = Validate.TryAgain(Error.WrongInputTryAgain());
+                        Error.WrongInputTryAgain();
+                        // tekrar denemek istiyor mu
+                        bool editTry = Validate.TryAgain(TryAgainMenu());
                         Show(editTry ? "2" : "-1");
                         break;
                     }
@@ -108,8 +112,9 @@ namespace Student_Management_V2
                     (mStudent student, bool errorEdit) = StudentHelper.StudentCreate();
                     while (errorEdit)
                     {
+                        Error.WrongInputTryAgain();
                         // tekrar denemek istiyor musun
-                        string errorValue = Error.WrongInputTryAgain();
+                        string errorValue = TryAgainMenu(); 
                         if (!Validate.TryAgain(errorValue))
                         {
                             Show();
@@ -123,28 +128,34 @@ namespace Student_Management_V2
                     // yeni oluşturulan öğrenci düzenlenmek istenen öğrencinin yerine atanıyor.
                     allStds[stdIndex] = student;
                     FileHelper.WriteFile(allStds, studentFileName);
-                    string tryValueForEdit = Successful.EditedSudentSaveFile();
+                    Successful.Edited();
+                    string tryValueForEdit = TryAgainMenu();
                     Show(Validate.TryAgain(tryValueForEdit) ? "2" : "-1");
                     break;
                 #endregion
 
+                #region Öğrenci sil
                 case "3":
                     var allStudents = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
                     StudentHelper.ShowStudentListToUser(allStudents);
                     string stdValueForRemove = GetStudentIdValue();
                     if (!Validate.IsBetween0_X(stdValueForRemove, allStudents.Count))
                     {
-                        // Girdiği değer aralık dışı tekrar denemek istiyor mu
-                        bool editTry = Validate.TryAgain(Error.WrongInputTryAgain());
+                        Error.WrongInputTryAgain();
+                        bool editTry = Validate.TryAgain(TryAgainMenu());
                         Show(editTry ? "3" : "-1");
                         break;
                     }
                     // kullanıcının girdiği değerdeki veri siliniyor.
                     allStudents.RemoveAt(int.Parse(stdValueForRemove));
                     FileHelper.WriteFile(allStudents, studentFileName);
-                    string tryValueForRemove = Successful.DeletedStutend();
+                    Successful.Deleted();
+                    string tryValueForRemove = TryAgainMenu();
                     Show(Validate.TryAgain(tryValueForRemove) ? "3" : "-1");
                     break;
+                #endregion
+
+                #region Öğrencileri göster
                 case "4":
                     List<mStudent> showedStd = FileHelper.ReadFile(FileHelper.dbPath(studentFileName));
                     StudentHelper.ShowStudentListToUser(showedStd);
@@ -152,6 +163,8 @@ namespace Student_Management_V2
                     Console.ReadLine();
                     Show();
                     break;
+                #endregion
+
                 case "5":
                     Environment.Exit(0);
                     break;
@@ -179,6 +192,14 @@ namespace Student_Management_V2
         private static string GetStudentIdValue()
         {
             Console.Write("Seçmek istediğiniz öğrencinin numarası: ");
+            return Console.ReadLine();
+        }
+
+        private static string TryAgainMenu()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("Tekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.ResetColor();
             return Console.ReadLine();
         }
     }

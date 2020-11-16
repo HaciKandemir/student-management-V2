@@ -15,12 +15,11 @@ namespace Student_Management_V2
             //Console.Clear();
         }
 
-        public static string WrongInputTryAgain()
+        public static void WrongInputTryAgain()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write("Yanlış veri girişi. \nTekrar denemek için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.WriteLine("Yanlış veri girişi.");
             Console.ResetColor();
-            return Console.ReadLine();
             //Console.Clear();
         }
     }

@@ -6,40 +6,25 @@ namespace Student_Management_V2
 {
     class Successful
     {
-        public static string SudentSaveFile()
+        public static void Added()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("Ekleme Başarılı.\nTekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.WriteLine("Ekleme Başarılı.");
             Console.ResetColor();
-            string value = Console.ReadLine();
-            //Console.Clear();
-            return value;
         }
 
-        public static string TryAgain()
-        {
-            Console.ForegroundColor = ConsoleColor.DarkMagenta;
-            Console.Write("Tekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
-            Console.ResetColor();
-            return Console.ReadLine();
-        }
-
-        public static string EditedSudentSaveFile()
+        public static void Edited()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("Düzenleme Başarılı.\nTekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.WriteLine("Düzenleme Başarılı.");
             Console.ResetColor();
-            return Console.ReadLine();
         }
 
-        public static string DeletedStutend()
+        public static void Deleted()
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Öğrenci silindi");
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
-            Console.Write("Tekrarlamak için ENTER'a, çıkmak için başka bir tuşa basın ");
+            Console.WriteLine("Silme işlemi başarılı");
             Console.ResetColor();
-            return Console.ReadLine();
         }
     }
 }
